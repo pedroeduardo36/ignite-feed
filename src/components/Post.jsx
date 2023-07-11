@@ -2,7 +2,7 @@ import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
-export function Post() {
+export function Post(props) {
   return (
     <article className={styles.post}>
       <header>
@@ -30,12 +30,12 @@ export function Post() {
         <p>Passando pra dizer que </p>
 
         <p>
-          Sou o homem mais sortudo do mundo, por conhecer a garota mais incrível
-          de todas
+          Estou vivendo algo muito melhor que meus sonhos, por conhecer a garota mais incrível
+          do mundo!
         </p>
 
         <p>
-          <a href="">Texto só pra por um link</a>
+          <a href="">Júlia, Eu te amo! 💜</a>
         </p>
       </div>
 
