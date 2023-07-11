@@ -1,42 +1,56 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable react/prop-types */
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 
-export function Post(props) {
+export function Post({ author, publishedAt, content }) {
+  const publishedDateFormatted = format(
+    publishedAt,
+    "d 'de' LLLL 'às' HH:mm'h'",
+    {
+      locale: ptBR,
+    }
+  );
+
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBR,
+    addSuffix: true,
+  });
+
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
           <Avatar
-            src="https://github.com/pedroeduardo36.png"
+            // eslint-disable-next-line react/prop-types
+            src={author.avatarUrl}
           />
           <div className={styles.authorInfo}>
-            <strong>Pedro Andrade</strong>
-            <span>Front end developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time
-          title="publicado 10 de julho às 10:53"
-          dateTime="2022-07-10  11:53:00"
-        >
-          Publicado há 1h
+        <time title={publishedDateFormatted} dateTime={publishedAt.toISOString}>
+          {publishedDateRelativeToNow}
         </time>
       </header>
 
       <div className={styles.content}>
-        <p> Fala galera</p>
-
-        <p>Passando pra dizer que </p>
-
-        <p>
-          Estou vivendo algo muito melhor que meus sonhos, por conhecer a garota mais incrível
-          do mundo!
-        </p>
-
-        <p>
-          <a href="">Júlia, Eu te amo! 💜</a>
-        </p>
+        {content.map((line) => {
+          if (line.type === "paragraph") {
+            return <p> {line.content} </p>;
+          } else if (line.type === "link") {
+            return (
+              <p>
+                <a href="#"> {line.content} </a>{" "}
+              </p>
+            );
+          }
+        })}
       </div>
 
       <form className={styles.commentForm}>
